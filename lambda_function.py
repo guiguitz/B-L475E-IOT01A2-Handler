@@ -16,13 +16,14 @@ from ask_sdk_model.interfaces.alexa.presentation.apl import (
     RenderDocumentDirective, ExecuteCommandsDirective, SpeakItemCommand,
     AutoPageCommand, HighlightMode)
 
+from ask_sdk_core.utils.request_util import get_slot_value
+
 createMQTTClient = AWSIoTMQTTClient("B-L475E-IOT01A2")
 
 """
 Change this endpoint to suit yours
 """
 createMQTTClient.configureEndpoint('a2mxctj6in6ukh-ats.iot.us-east-1.amazonaws.com', 443)
-#createMQTTClient.configureEndpoint(os.environ['AWS_IOT_ENDPOINT'], 443)
 
 """
 # Check these certificate names if necessary
@@ -53,6 +54,21 @@ def _load_apl_document(file_path):
     """Load the apl json document at the path into a dict object."""
     with open(file_path) as f:
         return json.load(f)
+
+"----------------------------------------------------------------------------------------------------------------------"
+
+def format_mqtt_state_message(state_variable, value):
+    payload = {"state":{"reported":{state_variable:value}}}
+    print("Payload")
+    print(json.dumps(payload))
+    return json.dumps(payload)
+
+
+def send_mqtt_state_message(topic, state_variable, value):
+    payload = format_mqtt_state_message(state_variable, value)
+    createMQTTClient.publish(topic, payload, 1)
+
+"----------------------------------------------------------------------------------------------------------------------"
 
 def format_mqtt_message(directive, data):
     payload = {}
@@ -138,6 +154,20 @@ def session_ended_request(handler_input):
     logger.info("In SessionEndedRequestHandler")
     logger.info("Session ended reason: {}".format(handler_input.request_envelope.request.reason))
     return handler_input.response_builder.response
+
+"----------------------------------------------------------------------------------------------------------------------"
+
+@sb.request_handler(can_handle_func = is_intent_name("SetLedStateIntent"))
+def set_led_on_intent_handler(handler_input):
+    value = get_slot_value(handler_input, "ON_OFF_SLOT")
+    speech = "Set LED state = " + value
+    print("Send 'LED_value: " + value + "' to MQTT")
+    send_mqtt_state_message("$aws/things/B-L475E-IOT01A2/shadow/update", "LED_value", value)
+
+    handler_input.response_builder.speak(speech).set_card(SimpleCard(SKILL_NAME, speech)).set_should_end_session(False)
+    return handler_input.response_builder.response
+
+"----------------------------------------------------------------------------------------------------------------------"
 
 @sb.exception_handler(can_handle_func = lambda i, e: 'AskSdk' in e.__class__.__name__)
 def ask_exception_intent_handler(handler_input, exception):

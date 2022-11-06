@@ -1,5 +1,5 @@
 LAMBDA_NAME=B-L475E-IOT01A2-Handler
-RELEASE_PATH=releases/lambda_function_v0.zip
+RELEASE_PATH=releases/lambda_function_v1.zip
 PACKAGE_PATH=package
 CERTS_PATH=certs
 USER_CONFIGS=user_configs.sh
@@ -7,7 +7,6 @@ USER_CONFIGS=user_configs.sh
 all: clean AWSIoTPythonSDK ask-sdk-core zip-package zip-lambda-function zip-certs deploy
 	@ echo ''
 	@ echo ''
-	rm -rf package
 	@ echo 'Finished!'
 
 AWSIoTPythonSDK:
@@ -26,7 +25,8 @@ zip-package:
 	@ echo ''
 	@ echo ''
 	@ echo '-> Ziping dependencies:'
-	cd $(PACKAGE_PATH) && zip -r9 -u ../$(RELEASE_PATH) . -q
+	cd $(PACKAGE_PATH) && zip -r9 ../$(RELEASE_PATH) . -q
+	rm -rf package
 
 zip-lambda-function:
 	@ echo ''
@@ -50,3 +50,7 @@ setup:
 deploy:
 	@ echo '-> B-L475E-IOT01A2-Handler deploy:'
 	aws lambda update-function-code --function-name ${LAMBDA_NAME} --zip-file fileb://$(RELEASE_PATH)
+
+update:
+	@ echo '-> Updating pip install:'
+	python3 -m pip install --upgrade pip
