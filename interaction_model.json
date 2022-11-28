@@ -1,0 +1,87 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "my node thing",
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "HelloWorldIntent",
+                    "slots": [],
+                    "samples": [
+                        "hi there",
+                        "good morning",
+                        "hello",
+                        "hi"
+                    ]
+                },
+                {
+                    "name": "RedIntent",
+                    "slots": [],
+                    "samples": [
+                        "red",
+                        "turn red",
+                        "go red"
+                    ]
+                },
+                {
+                    "name": "SparkleIntent",
+                    "slots": [],
+                    "samples": [
+                        "go mad",
+                        "sparkle"
+                    ]
+                },
+                {
+                    "name": "SetLedStateIntent",
+                    "slots": [
+                        {
+                            "name": "ON_OFF_SLOT",
+                            "type": "ON_OFF_SLOT"
+                        }
+                    ],
+                    "samples": [
+                        "set led {ON_OFF_SLOT}",
+                        "turn led {ON_OFF_SLOT}",
+                        "led {ON_OFF_SLOT}"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "ON_OFF_SLOT",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "OFF"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "ON"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -67,7 +67,8 @@ createMQTTClient.connect()
 # Logging setup
 
 SKILL_NAME = "My display controller"
-HELP_MESSAGE = "You can say hello, turn the display red, or sparkle."
+LAUNCH_MESSAGE = "This skill was developed as a final course work at UFMG by Guilherme Amorim, under the guidance of Prof. Ricardo de Oliveira Duarte. You can say \"Hello\" or \"set led on/off\"."
+HELP_MESSAGE = "Hi, You can say \"Hello\" or \"set led on/off\"."
 HELP_REPROMPT = "What do you want to do? Try saying hello?"
 STOP_MESSAGE = "Goodbye!"
 FALLBACK_MESSAGE = "Oops! I didn't understand. Say hello."
@@ -144,7 +145,7 @@ def stop_moving_intent_handler(handler_input):
 
 @sb.request_handler(can_handle_func=is_request_type("LaunchRequest"))
 def launch_request_handler(handler_input):
-    speech = "Hi! You can control the display, say hello, or give me a command like sparkle or turn red"
+    speech = LAUNCH_MESSAGE
     handler_input.response_builder.speak(speech).set_card(SimpleCard(SKILL_NAME, speech)).set_should_end_session(False)
     return handler_input.response_builder.response
 

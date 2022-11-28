@@ -1,5 +1,5 @@
 LAMBDA_NAME=B-L475E-IOT01A2-Handler
-RELEASE_PATH=releases/lambda_function_v1.zip
+RELEASE_PATH=releases/lambda_function_v2.zip
 PACKAGE_PATH=package
 CERTS_PATH=certs
 USER_CONFIGS=user_configs.sh
